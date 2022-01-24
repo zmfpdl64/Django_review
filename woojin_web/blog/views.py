@@ -1,24 +1,12 @@
-from django.shortcuts import render
 from .models import Post
+from django.views.generic import ListView, DetailView
 
-def index(request):
-    posts = Post.objects.all().order_by('-pk') #속성을 리버스로 하여 posts에 저장한다.
-    return render(
-        request,    #여기서 request는 사용가 post형식으로 보냈을때의 form데이터를 저장한다.
+class PostList(ListView):
+    model = Post    #자동으로 url에서 PostList를 호출하면 Post객체가 템플릿으로 전달된다.
+    template_name = 'blog/index.html'  #ListView는 템플릿 이름을 설정 안할경우 기본적으로 index.html에 전달된다.
+    #model이 index.html에 전달될때는 post_list로 전달된다.
 
-        'blog/index.html',
-        {
-            'posts': posts,
-        },
-    )
+class PostDetail(DetailView):
+    model = Post    #템플릿 이름을 설정해주지 않으면 post_detail.html로 자동으로 연결된다.
 
-def single_post_page(request, pk):
-    post = Post.objects.get(pk=pk)
 
-    return render(
-        request,
-        'blog/single_post_page.html',
-        {
-            'post':post,
-        }
-    )

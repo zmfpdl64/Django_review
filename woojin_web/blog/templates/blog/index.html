@@ -13,7 +13,7 @@
         <a href='/'>Home</a>
     </nav>
     <h1>Blog</h1>
-    {% for p in posts %}
+    {% for p in post_list %}
         <hr/>
         <h2><a href='/blog/{{p.pk}}/'>{{ p.title }}</a></h2>
         <h4>{{ p.content }}</h4>
