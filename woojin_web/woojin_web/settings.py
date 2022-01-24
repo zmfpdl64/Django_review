@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent   #__file__현재 파일위치를 나타낸다.
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog',
+    'single_pages',
 ]
 
 MIDDLEWARE = [
@@ -105,13 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/seoul'
 
-USE_I18N = True
+USE_I18N = True #장고의 번역 시스템 활성화 여부
 
-USE_L10N = True
+USE_L10N = True #현지화 된 데이터 형식 사용 여부
 
-USE_TZ = True
+USE_TZ = False  #장고가 시간대를 인식하는 여부
 
 
 # Static files (CSS, JavaScript, Images)
