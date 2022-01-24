@@ -10,3 +10,6 @@ class Post(models.Model):
     def __str__(self):
         return f'[{self.pk}][{self.title}]'   #Post객체가 호출되면 __str__함수가 실행되어 pk고유값과 title이 반환된다
                                             #[[self.pk][self.title]]이렇게 반환된다. f는 문자열 포맷팅이다.
+                                        
+    def get_absolute_url(self):     #
+        return f'/blog/{self.pk}/'
