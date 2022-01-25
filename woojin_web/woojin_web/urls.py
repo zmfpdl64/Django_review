@@ -26,3 +26,4 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)    #/media/ , base_dir/_media
+#이미지

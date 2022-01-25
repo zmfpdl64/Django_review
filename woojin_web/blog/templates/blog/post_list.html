@@ -2,9 +2,11 @@
 {% extends 'blog/base.html' %}
 
 {% block main_area %}
+{% if post_list.exists %}
 
 {% for post in post_list %}
 <div class="card mb-4">
+
     {% if post.head_image %}
     <a href="#!"><img class="card-img-top" src="{{ post.head_image.url }}" alt="{{ p }} head image" /></a>
     {% else %}
@@ -18,6 +20,10 @@
     </div>
 </div>
 {% endfor %}
+
+{% else %}
+<h1> 게시글이 존재하지 않습니다..</h1>
+{% endif %}
 <!-- Pagination-->
 <nav aria-label="Pagination">
     <hr class="my-0" />
