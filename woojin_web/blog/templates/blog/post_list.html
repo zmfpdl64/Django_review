@@ -5,9 +5,11 @@
 
 {% for post in post_list %}
 <div class="card mb-4">
-    
-    <a href="#!"><img class="card-img-top" src="{{ post.head_image.url }}" alt="..." /></a>
-    
+    {% if post.head_image %}
+    <a href="#!"><img class="card-img-top" src="{{ post.head_image.url }}" alt="{{ p }} head image" /></a>
+    {% else %}
+    <img class="card-img-top" src="https://picsum.photos/seed/{{ post.id }}/800/200" alt="random_image">
+    {% endif %}
     <div class="card-body">
         <div class="small text-muted">{{ post.created_at }}</div>
         <h2 class="card-title">{{ post.title }}</h2>
