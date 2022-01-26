@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}" media="screen">
-    <title>Blog</title>
+    <title>{% block head_title %}Blog{% endblock %}</title>
 </head>
 <body>
     {% include 'blog/navbar.html' %}
