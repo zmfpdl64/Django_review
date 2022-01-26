@@ -2,11 +2,11 @@
 {% extends 'blog/base.html' %}
 
 {% block main_area %}
-{% if post_list.exists %}
 
-{% for post in post_list %}
-<div class="card mb-4">
+<div class="card mb-4" id='main-area'>
+    {% if post_list.exists %}
 
+    {% for post in post_list %}
     {% if post.head_image %}
     <a href="#!"><img class="card-img-top" src="{{ post.head_image.url }}" alt="{{ p }} head image" /></a>
     {% else %}
@@ -15,15 +15,16 @@
     <div class="card-body">
         <div class="small text-muted">{{ post.created_at }}</div>
         <h2 class="card-title">{{ post.title }}</h2>
-        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text">{{ post.content | truncatewords:45 }}</p>
         <a class="btn btn-primary" href="/blog/{{ post.pk }}/">Read more →</a>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
 
-{% else %}
-<h1> 게시글이 존재하지 않습니다..</h1>
-{% endif %}
+    {% else %}
+    <h1>아직 게시물이 없습니다.</h1>
+    {% endif %}
+</div>
+
 <!-- Pagination-->
 <nav aria-label="Pagination">
     <hr class="my-0" />
