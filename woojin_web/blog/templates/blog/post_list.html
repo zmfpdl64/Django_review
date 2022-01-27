@@ -3,10 +3,15 @@
 
 
 {% block main_area %}
-<style>
-    body{ background-color: rgb(54, 52, 52)
-    }
-</style>
+
+<h1>Blog    
+    {% if category %}
+    <span class="badge badge-secondary" style="font-size:30px">{{ category }}</span>
+    {% endif %}
+    {% if tag %}
+    <span> <i class="fas fa-tags">{{ tag }}</i></span> 
+    {% endif %}
+</h1>
 <div class="card mb-4" id='main-area' >
     {% if post_list.exists %}
 
@@ -17,9 +22,23 @@
     <img class="card-img-top" src="https://picsum.photos/seed/{{ post.id }}/800/200" alt="random_image">
     {% endif %}
     <div class="card-body">
+        {% if post.category %}
+        <span class="badge badge-secondary float-right" style="font-size:20px">{{ post.category }}</span>
+        {% else %}
+        <span class="badge badge-secondary float-right" style="font-size:20px">미분류</span>
+        {% endif %}
         <div class="small text-muted">{{ post.created_at }}</div>
         <h2 class="card-title">{{ post.title }}</h2>
         <p class="card-text">{{ post.content | truncatewords:45 }}</p>
+        <p>
+            {% if post.tag.exists %}
+            
+            {% for tag in post.tag.all %}
+            <i class="fas fa-tags"><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></i>
+            {% endfor %}
+            </i>
+            {% endif %}
+        </p>
         <a class="btn btn-primary" href="/blog/{{ post.pk }}/">Read more →</a>
     </div>
     {% endfor %}

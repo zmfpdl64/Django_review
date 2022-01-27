@@ -7,10 +7,7 @@
         {% endblock %}
 
         {% block main_area %}
-        <style>
-            body{ background-color: rgb(54, 52, 52); color:white
-            }
-        </style>
+
         <!-- Post header-->
         <header class="mb-4">
 
@@ -22,8 +19,9 @@
         <!-- Post meta content-->
         <div class="text-muted fst-italic mb-2">{{ post.created_at }}`</div>
         <!-- Post categories-->
-        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+        {% for tag in post.tag.all %}
+        <i class="fas fa-tags"><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></i>
+        {% endfor %}
         {% if post.head_image %}
         <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.head_image.url }}"></figure>
         {% else %}

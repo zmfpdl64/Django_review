@@ -38,20 +38,18 @@
                     <div class="card-header">Categories</div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">Web Design</a></li>
-                                    <li><a href="#!">HTML</a></li>
-                                    <li><a href="#!">Freebies</a></li>
+                            {% if categories.exists %}
+                                <ul >
+                                {% for p in categories %}                                
+                                    <li>
+                                        <a href="{{ p.get_absolute_url }}">{{ p }} ({{ p.post_set.count }})</a>
+                                    </li>                                
+                                {% endfor %}
+                                    <li>
+                                        <a href="/blog/category/no_category/">미분류 ({{ no_category_post_count }})</a>
+                                    </li>
                                 </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">JavaScript</a></li>
-                                    <li><a href="#!">CSS</a></li>
-                                    <li><a href="#!">Tutorials</a></li>
-                                </ul>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
