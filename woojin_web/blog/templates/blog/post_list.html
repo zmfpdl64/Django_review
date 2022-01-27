@@ -3,8 +3,11 @@
 
 
 {% block main_area %}
-
-<div class="card mb-4" id='main-area'>
+<style>
+    body{ background-color: rgb(54, 52, 52)
+    }
+</style>
+<div class="card mb-4" id='main-area' >
     {% if post_list.exists %}
 
     {% for post in post_list %}
