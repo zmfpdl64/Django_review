@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Post, Category, Tag
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, CreateView
 
 class PostList(ListView):
     model = Post    #자동으로 url에서 PostList를 호출하면 Post객체가 템플릿으로 전달된다.
@@ -12,6 +13,18 @@ class PostList(ListView):
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Post.objects.filter(category=None).count()
         return context
+
+class PostCreate(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'content', 'head_image', 'file_upload', 'category']  #model로 불러온 db의 사용할 속성을 필드에 담는다.
+
+    def form_valid(self, form):
+        current_user = self.request.user
+        if current_user.is_authenticated:
+            form.instance.author = current_user
+            return super(PostCreate, self).form_valid(form)
+        else:
+            return redirect('/blog/')
 
 class PostDetail(DetailView):
     model = Post    #템플릿 이름을 설정해주지 않으면 post_detail.html로 자동으로 연결된다.

@@ -16,8 +16,9 @@
         <div id="post-area">
         <!-- Post title-->
         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+        <h6>by {{post.author }}</h6>
         <!-- Post meta content-->
-        <div class="text-muted fst-italic mb-2">{{ post.created_at }}`</div>
+        <div class="text-muted fst-italic mb-2">{{ post.created_at }}</div>
         <!-- Post categories-->
         {% for tag in post.tag.all %}
         <i class="fas fa-tags"><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></i>

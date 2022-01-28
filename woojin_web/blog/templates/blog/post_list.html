@@ -5,6 +5,7 @@
 {% block main_area %}
 
 <h1>Blog    
+    <a class="btn btn-info btn-sm float-right" href="/blog/create_post/" role="button"><i class="fas fa-pen"></i>&nbsp;&nbsp;New Post</a>
     {% if category %}
     <span class="badge badge-secondary" style="font-size:30px">{{ category }}</span>
     {% endif %}
@@ -28,6 +29,7 @@
         <span class="badge badge-secondary float-right" style="font-size:20px">미분류</span>
         {% endif %}
         <div class="small text-muted">{{ post.created_at }}</div>
+        <h6>작성자: {{ post.author }}</h6>
         <h2 class="card-title">{{ post.title }}</h2>
         <p class="card-text">{{ post.content | truncatewords:45 }}</p>
         <p>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}" media="screen">
+
+    <title>{% block head_title %}Blog{% endblock %}</title>
+</head>
+<body>
+    {% include 'blog/navbar.html' %}
+      <div class=" container my-3">
+          <div class="row">
+              <div class="col-12" id="main_area">
+                  {% block main_area %}
+
+                  {% endblock %}
+              </div>
+          </div>
+      </div>
+    {% include 'blog/footer.html' %}
+</body>
+</html>
