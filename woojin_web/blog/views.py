@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify 
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
-
+from django.db.models import Q
 
 class PostList(ListView):
     model = Post    #자동으로 url에서 PostList를 호출하면 Post객체가 템플릿으로 전달된다.
@@ -15,7 +15,7 @@ class PostList(ListView):
     #model이 index.html에 전달될때는 post_list로 전달된다.
     ordering = '-pk'
     paginate_by = 5
-
+    
     #def dispatch(self, request, *args, **kwargs):
     #    post_list = Post.objects.all()
     #    page = request.GET.get('page', '1')
@@ -205,3 +205,20 @@ def delete_comment(request, pk):
         comment.delete()
         return redirect(post.get_absolute_url())
     raise PermissionDenied
+
+class PostSearch(PostList):
+    paginate_by = None
+
+    def get_queryset(self):
+        q = self.kwargs['q']
+        post_list = Post.objects.filter(
+            Q(title__contains=q) | Q(tag__name__contains=q)
+        ).distinct()
+        return post_list
+    
+    def get_context_data(self,**kwargs):
+        context = super(PostSearch, self).get_context_data()
+        q = self.kwargs['q']
+        context['search_info'] = f'Search: {q} ({self.get_queryset().count()})'
+
+        return context
