@@ -1,7 +1,7 @@
 
 
         {% extends 'blog/base.html' %}
-        
+        {% load crispy_forms_tags %}
         {% block head_title %}
             {{post.title}} - Blog
         {% endblock %}
@@ -16,6 +16,9 @@
         <div id="post-area">
         <!-- Post title-->
         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+        {% if user.is_authenticated and user == post.author %}
+        <a href="/blog/updated_post/{{ post.pk }}/" class="btn btn-info btn-sm float-right" type="button">Edit Post</a>
+        {% endif %}
         <h6>by {{post.author }}</h6>
         <!-- Post meta content-->
         <div class="text-muted fst-italic mb-2">{{ post.created_at }}</div>
@@ -30,7 +33,7 @@
         {% endif %}
         <!-- Post content-->
         <section class="mb-5">
-            {{ post.content }}
+            <p>{{ post.get_content_markdown | safe }}</p>
         </section>
         {% if post.file_upload %}
         <a href="{{ post.file_upload.url }}" class="btn btn-outline-dark" role="button" download>Download:
@@ -47,14 +50,70 @@
         {% endif %}
         </div>
     <!-- Comments section-->
+
 <div id="comment-area">
     <section class="mb-5">
         <div class="card bg-light">
+            <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
+                {% if user.is_authenticated %}
                 <!-- Comment form-->
-                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ comment_form | crispy}}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
                 <!-- Comment with nested comments-->
+                {% else %}
+                <a role="button" class="btn btn-outline-dark btn-block btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">로그인 해야 댓글을 남길 수 있습니다.</a>
+                {% endif %}
                 <div class="d-flex mb-4">
+                    
+                </div>
+
+                {% if post.comment_set.exists %}
+
+                    {% for comment in post.comment_set.iterator %}
+                    {% if user.is_authenticated and user == comment.author %}
+                    <div class="float-right">
+                        <a role="button" class="btn btn-sm btn-info" id="comment-{{ comment.pk }}-update-btn"
+                        href = "/blog/update_comment/{{ comment.pk }}/">edit
+                        </a>
+                        <a role="button"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ comment.pk }}" class="btn btn-sm btn-danger" id="delete_comment">delete</a>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal-{{ comment.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            댓글을 삭제하시겠습니까?
+                        </div>
+                        <div class="modal-footer">
+                            <a role="button" class="btn btn-secondary" href="/blog/delete_comment/{{ comment.pk }}/">Yes</a>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">No</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    {% endif %}
+                    <div class="media mb-4" id="comment-{{ comment.pk }}">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50*50" alt="">
+                        <div class="media-body>">
+                            <h5 class="mt-0">{{ comment.author.username }} &nbsp;&nbsp;<small class="text-muted">{{ comment.created_at }}</small></h5>
+                            <p>{{ comment.content | linebreaks }}</p>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </section>

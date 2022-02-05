@@ -5,7 +5,9 @@
 {% block main_area %}
 
 <h1>Blog    
+    {% if user.is_authenticated %}
     <a class="btn btn-info btn-sm float-right" href="/blog/create_post/" role="button"><i class="fas fa-pen"></i>&nbsp;&nbsp;New Post</a>
+    {% endif %}
     {% if category %}
     <span class="badge badge-secondary" style="font-size:30px">{{ category }}</span>
     {% endif %}
@@ -31,7 +33,7 @@
         <div class="small text-muted">{{ post.created_at }}</div>
         <h6>작성자: {{ post.author }}</h6>
         <h2 class="card-title">{{ post.title }}</h2>
-        <p class="card-text">{{ post.content | truncatewords:45 }}</p>
+        <p class="card-text">{{ post.get_content_markdown | truncatewords_html:45 | safe }}</p> <!--safe를 통해 태그가 안보인다.-->
         <p>
             {% if post.tag.exists %}
             
@@ -54,13 +56,21 @@
 <nav aria-label="Pagination">
     <hr class="my-0" />
     <ul class="pagination justify-content-center my-4">
-        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-        <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-        <li class="page-item"><a class="page-link" href="#!">2</a></li>
-        <li class="page-item"><a class="page-link" href="#!">3</a></li>
-        <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-        <li class="page-item"><a class="page-link" href="#!">15</a></li>
-        <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+        {% if is_paginated %}
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1" tabindex="-1" aria-disabled="true">&lt;&lt;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+        {% endif %}
+
+        {% for i in page_obj.paginator.page_range %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>        
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&gt;&gt;</a></li>
+        {% endif %}
+        {% endif %}
+
     </ul>
 </nav>
 {% endblock %}

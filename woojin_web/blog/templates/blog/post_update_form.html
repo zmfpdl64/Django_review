@@ -1,17 +1,17 @@
 {% extends 'blog/base_full_width.html' %}
 {% load crispy_forms_tags %}
-{% block head_title %}Create Post -Blog {% endblock %}
+{% block head_title %}Update Post -Blog {% endblock %}
 
 {% block main_area %}
 
-<h1>Create New Post</h1>
+<h1>Update Post</h1>
 <hr/>
 <form method="post" entype="multipart/form-data">{% csrf_token %}
     <table>
         {{ form | crispy}}
-        <div id="div_id_tags_str">
+        <div>
             <label for="id_tags_str">Tags:</label>
-            <input type="text" name="tags_str" id="id_tags_str" class="textinput textInput form-control">
+            <input type="text" id="id_tags_str" name="tags_str" value="{{ tags_str_default }}" class="textinput textInput form-control">
         </div>
     </table>
     {{ form.media }}

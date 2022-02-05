@@ -1,9 +1,11 @@
 from django.contrib import admin
-from .models import Post, Category, Tag
+from .models import Post, Category, Tag, Comment
+from markdownx.admin import MarkdownxModelAdmin
 # Register your models here.
 
-admin.site.register(Post)
+admin.site.register(Post, MarkdownxModelAdmin)
 #admin.site.register(Category)  이렇게 선언해도 되지만 네임을 입력했을 때 자동으로 slug필드까지 채워주기 위해 class를 선언하겠다.
+admin.site.register(Comment)
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}

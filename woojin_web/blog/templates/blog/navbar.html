@@ -1,4 +1,5 @@
 
+{% load socialaccount %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light" id='navbar'>
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Woojin_Web</a>
@@ -22,12 +23,16 @@
             계정
           </a>
           <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+            {% if user.is_authenticated %}
+            <li><a class="dropdown-item"  href="/accounts/logout/">로그아웃</a></li>
+            {% else %}
             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal" href="#">로그인</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
+            {% endif %}
           </ul>
         </ul>
-      </div>
+      </div> 
     </div>
   </nav>
   <!-- Button trigger modal -->
@@ -37,22 +42,22 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="logInModalLabel">로그인, 회원가입</h5>
+        <h5 class="modal-title" >로그인, 회원가입</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div>
-          <button type="button"class="btn btn-primary" style="width: 350pt; height:30pt; border-color:black; color: black; background-color: rgb(255, 255, 0)">
+          <a role="button" class="btn btn-primary"href="{% provider_login_url 'kakao' %}" style="width: 350pt; height:30pt; border-color:black; color: black; background-color: rgb(255, 255, 0)">
             <img src="https://cdn-icons-png.flaticon.com/512/2111/2111466.png" height="20pt" width="20pt">카카오 계정 로그인</button></a>
           <hr/>
         </div>
         <div>
-          <button type="button" class="btn btn-primary"style="width: 350pt; height:30pt;border-color:black; color: black; background-color:rgb(234, 234, 234)">
+          <a role="button" class="btn btn-primary" href="{% provider_login_url 'google' %}"style="width: 350pt; height:30pt;border-color:black; color: black; background-color:rgb(234, 234, 234)">
             <img src="https://cdn-icons.flaticon.com/png/512/2504/premium/2504739.png?token=exp=1643253388~hmac=0deca8bc98798546448e21d0a0e216e7" height="20pt" widht="20pt">구글 계정 로그인</button></a>
           <hr/>
         </div>
         <div>
-          <button type="button" class="btn btn-primary"style="width: 350pt; height:30pt;border-color:black;color: black; background-color: white">회원가입</button></a>
+          <a role="button" href="/accounts/login/" class="btn btn-primary"style="width: 350pt; height:30pt;border-color:black;color: black; background-color: white">로그인</button></a>
           <hr/>
         </div>
       </div>
